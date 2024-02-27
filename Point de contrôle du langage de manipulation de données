@@ -1,5 +1,5 @@
 
-question1
+question1: les requêtes SQL appropriées pour insérer tous les enregistrements fournis dans leurs tables correspondantes.
 
 CREATE TABLE produits( produit_id INT PRIMARY KEY NOT NULL, nom VARCHAR(20) NOT NULL, prix DECIMAL NOT NULL );
 INSERT INTO produits (produit_id,nom, prix) VALUES (1,'Cookies', 10), (2,'Candy', 5.2);
@@ -21,13 +21,18 @@ CREATE TABLE Commandes(commande_id INT PRIMARY KEY NOT NULL,
 INSERT INTO commandes (commande_id,client_id, produit_id, quantite, date_de_commande)
  VALUES (1,1, 2, 3, '2023-01-22'), (2,2, 1, 10, '2023-04-14');
 
-question2
+question2 :les requêtes SQL appropriées pour insérer tous les enregistrements fournis dans leurs tables correspondantes.
 
 UPDATE `commandes` SET `quantite`='6' WHERE 2;
 
-question3
+question3 : Supprimez le troisième client de la table clients.
 
 DELETE FROM `clients` WHERE `client_id`='3';
+
+question4 :Supprimez le contenu du tableau des commandes, puis supprimez le tableau.
+
+DELETE FROM Commandes;
+
 
 question4
 
