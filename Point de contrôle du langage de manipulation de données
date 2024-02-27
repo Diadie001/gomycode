@@ -1,0 +1,36 @@
+
+question1
+
+CREATE TABLE produits( produit_id INT PRIMARY KEY NOT NULL, nom VARCHAR(20) NOT NULL, prix DECIMAL NOT NULL );
+INSERT INTO produits (produit_id,nom, prix) VALUES (1,'Cookies', 10), (2,'Candy', 5.2);
+
+
+
+CREATE TABLE clients( client_id INT PRIMARY KEY NOT NULL, nom VARCHAR(20) NOT NULL, adresse VARCHAR(20) NOT NULL );
+INSERT INTO clients (client_id,nom, adresse) VALUES (1,'Ahmed', 'Tunisie'), (2,'Coulibaly', 'Sénégal'), (3,'Hasan', 'Egypte');
+
+
+CREATE TABLE Commandes(commande_id INT PRIMARY KEY NOT NULL, 
+                       client_id INT NOT NULL,
+                       produit_id INT NOT NULL, 
+                       quantite INT NOT NULL, 
+                       date_de_commande DATE NOT NULL, 
+                       FOREIGN KEY (client_id) REFERENCES Clients(client_id), 
+                       FOREIGN KEY (produit_id) REFERENCES Produits(produit_id));
+
+INSERT INTO commandes (commande_id,client_id, produit_id, quantite, date_de_commande)
+ VALUES (1,1, 2, 3, '2023-01-22'), (2,2, 1, 10, '2023-04-14');
+
+question2
+
+UPDATE `commandes` SET `quantite`='6' WHERE 2;
+
+question3
+
+DELETE FROM `clients` WHERE `client_id`='3';
+
+question4
+
+DELETE FROM Commandes;
+
+
