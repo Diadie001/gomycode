@@ -1,0 +1,31 @@
+1-Convertie le diagramme entité-relation en un modèle relationnel.
+Wine (numW, category, year, degree)
+Harvest (#numW,#numP, quantity)
+Producer (numP, firstName, lastName, region)
+2-Implémentez le modèle relationnel
+Create table Wine ( numW int primary key, category varchar (23), year int, degree int );
+Create table Producer( numP int primary key, firstName varchar(25), lastName varchar (20), region varchar (20) );
+create table Harvest ( numW int, numP int, quantite int, Foreign key (numW) references Wine(numW), foreign key (numP) references Producer(numP) );
+3-Insérez des données
+Insert into Wine values (1,'rouge',2019,12), (2,'blanc', 1999, 14), (3,'rose', 1886,10), (4,'Merlot', 1996,20), (5,'Pinot Noir ', 1887, 56), (6,'sec',1995,15);
+Insert into Producer values (1,'diadie', 'camara', 'senegal'), (2,'amy', 'ball', 'Bretagne'), (3,'awa', 'sarr', 'Marseille'),(4,'Issa', 'coulibaly', 'nouakchott'),(5,'amadou', 'sy', 'keadi');
+Insert into Harvest values (1,1,3000),
+(1,6,2000),
+(2,2,300),
+(3,4,200),
+(4,3,2900),
+(5,5,1000);
+4-Donnez la liste des producteurs.
+Select * from Producer;
+5-la liste des producteurs triés par nom. 
+Select firstName, lastName From producer Order by lastName;
+6- la liste des producteurs de Sousse
+Select firstName, lastName From Producer Where region='sousse';
+7- la quantité totale de vin produit portant le numéro 12.
+Select sum( h.quantite) as ‘Quantite_totale_12’ From Wine w Inner join Harvest h on w.numW=h.numW Where w.degree=12;
+8-la quantité de vin produite par catégorie.
+Select w.category, sum(h.quantite) as ‘Quantite_totale_produite’ From Wine w Inner join Harvest h on w.numW=h.numW Group by w.numW;
+9-Select p.firstName, lastName From Producer p Inner join Harvest h on p.numP=h.numP Inner join Wine w on w.numW=h.numW Group by h.numP Having SUM(h.quantite<300) order by p.firstName,lastName ASC;
+10-les numéros de vins qui ont un degré supérieur à 12 et qui ont été produits par le producteur numéro 24
+Select w.numW as ‘les_numero_vin_superieur_12’ From Wine w Inner join Harvest h on h.numW=w.numW Inner join Producer p on p.numP=h.numP Where w.degree>12 and (p.numP)=24;
+
