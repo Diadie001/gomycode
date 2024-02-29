@@ -1,0 +1,31 @@
+CREATE DATABASE camara;
+1-	Implémentez le modèle de relation fourni en utilisant SQL
+CREATE TABLE customer(customer_id int primary key,customer_name varchar(20),customer_tel int);
+CREATE table product(product_id int primary key,product_name varchar(28),category varchar(23),price int );
+create table orders (customer_id int,product_id int,orderDate date ,quantity int ,total_amount int,foreign key(customer_id)REFERENCES customer(customer_id),FOREIGN key (product_id) references product (product_id));
+INSERT INTO orders VALUES (1,3,'2012-12-09',123,1234),(2,3,'2012-04-09',43,124);
+2-	Insérez des données dans vos tables
+INSERT INTO `customer`(`customer_id`, `customer_name`, `customer_tel`) VALUES (1,'diadie',768),(2,'sirakhe',655),(3,'khale',768);
+INSERT INTO `product`(`product_id`, `product_name`, `category`, `price`) VALUES (1,'kirene','eau mineral','1000'),(2,'chemise','habits','31000');
+INSERT INTO `product`(`product_id`, `product_name`, `category`, `price`) VALUES (3,' widget','prod3','1000'),(4,'gadget','prod4','2000');
+INSERT INTO `orders`(`customer_id`, `product_id`, `orderDate`, `quantity`, `total_amount`) VALUES (1,3,'2020-04-13',3,6),(2,3,'2010-03-13',12,120),(3,3,'2011-03-13',30,3000),(1,4,'2016-04-13',132,1260),(2,4,'2022-03-13',100,1200);
+
+3- Écrivez une requête SQL pour récupérer les noms des clients qui ont passé une commande d'au moins un widget et d'au moins un gadget, ainsi que le coût total des widgets et gadgets commandés par chaque client. Le coût de chaque article doit être calculé en multipliant la quantité par le prix du produit.
+SELECT c.customer_name FROM customer c LEFT JOIN ( SELECT o.customer_id, SUM(o.quantity * p.price) AS cout_total_widgets FROM orders o INNER JOIN product p ON o.product_id = p.product_id WHERE p.product_name = 'widget' GROUP BY o.customer_id ) AS w ON c.customer_id = w.customer_id LEFT JOIN ( SELECT o.customer_id, SUM(o.quantity * p.Price) AS cout_total_gadgets FROM orders o INNER JOIN product p ON o.product_id = p.product_id WHERE p.product_name = 'gadget' GROUP BY o.customer_id ) AS g ON c.customer_id = g.customer_id;
+
+4-une requête pour récupérer les noms des clients qui ont passé une commande pour au moins un widget, ainsi que le coût total des widgets commandés par chaque client.
+SELECT c.customer_name AS 'Nom des clients', SUM(o.quantity * p.Price) AS 'Cout total des widgets' FROM customer c INNER JOIN orders o ON o.customer_id = c.customer_id INNER JOIN product p ON p.product_id = o.product_id WHERE p.product_name = 'widget' GROUP BY c.customer_id;
+
+5- une requête pour récupérer les noms des clients qui ont passé une commande pour au moins un gadget, ainsi que le coût total des gadgets commandés par chaque client.
+SELECT c.customer_name AS 'Nom des clients', SUM(o.quantity * p.Price) AS 'Cout total des gadget' FROM customer c INNER JOIN orders o ON o.customer_id = c.customer_id INNER JOIN product p ON p.product_id = o.product_id WHERE p.product_name = 'gadget' GROUP BY c.customer_id;
+6- une requête pour récupérer les noms des clients qui ont passé une commande d'au moins un doohickey, ainsi que le coût total des doohickeys commandés par chaque client
+SELECT c.customer_name AS 'Nom des clients', SUM(o.quantity * p.Price) AS 'Cout total des doohickey' FROM customer c INNER JOIN orders o ON o.customer_id = c.customer_id INNER JOIN product p ON p.product_id = o.product_id WHERE p.product_name = 'doohickey' GROUP BY c.customer_id;
+7- une requête pour récupérer le nombre total de widgets et de gadgets commandés par chaque client, ainsi que le coût total des commandes.
+8- une requête pour récupérer les noms des produits qui ont été commandés par au moins un client, ainsi que la quantité totale de chaque produit commandé.
+SELECT p.product_name, COUNT(o.quantity) AS 'Quantité totale de produit commandée' FROM product p INNER JOIN orders o ON o.product_id = p.product_id GROUP BY p.product_id;
+9- une requête pour récupérer les noms des clients qui ont passé le plus de commandes, ainsi que le nombre total de commandes passées par chaque client.
+SELECT c.customer_name, COUNT(o.quantity) AS 'nombre_total_commandes' FROM customer c INNER JOIN orders o ON c.customer_id = o.customer_id GROUP BY c.customer_id ORDER BY COUNT(o.quantity) DESC;
+10- une requête pour récupérer les noms des produits les plus commandés, ainsi que la quantité totale de chaque produit commandé.
+SELECT p.product_name, SUM(o.quantity) AS nombre_total_commandes FROM product p INNER JOIN orders o ON p.product_id = o.product_id GROUP BY p.product_id ORDER BY COUNT(o.quantity) DESC;
+11-  une requête pour récupérer les noms des clients qui ont passé une commande chaque jour de la semaine, ainsi que le nombre total de commandes passées par chaque client.
+SELECT c.customer_name, COUNT(DISTINCT DAYOFWEEK(o.orderDate)) AS jours_avec_commandes FROM customer c INNER JOIN orders o ON c.customer_id =o.customer_id GROUP BY c.customer_id;
